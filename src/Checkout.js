@@ -6,13 +6,14 @@ import Subtotal from './Subtotal';
 import { useStateValue } from "./Stateprovider";
 
 function Checkout() {
-    const[{basket}, dispatch]=useStateValue();
+    const[{basket, user}, dispatch] = useStateValue();
     return (
         <div className="checkout">
             <div className="checkout_left">
                 <img className="checkout_ad"
                 src="OCC_Amazon1._CB423492668_.jpg" alt="" />
                 <div>
+                    <h3> Hello, {user?.email} </h3>
                     <h2 className="checkout_title">
                     Your shopping Basket </h2>
                     {basket.map(item=>(

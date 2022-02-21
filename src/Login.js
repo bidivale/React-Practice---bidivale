@@ -1,20 +1,31 @@
 import './Login.css';
 
+import {Auth, createUserWithEmailAndPassword, db, signInWithEmailAndPassword} from './firebase.js';
+import { Link, useHistory } from 'react-router-dom';
 import React, {useState} from 'react';
 
-import { Link } from 'react-router-dom';
-import { useStateValue } from './Stateprovider';
-
 function Login() {
-    const[email, setEmail] = useState('');
+    const history = useHistory();
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const signIn = e =>{
+    const signIn = e => {
         e.preventDefault();
-        //Some fancy firebase login stuff
-    }
-    const register = e =>{
+        signInWithEmailAndPassword(Auth, email, password)
+        .then(auth=> {
+            history.push('/')
+        })
+        .catch(error => alert(error.message))
+        }
+    const register = e => {
         e.preventDefault();
-        //Do some firebase register stuff
+        createUserWithEmailAndPassword(Auth, email, password)
+            .then((auth) => {
+            // it successfully created a new user with email and password
+            if(auth) {
+                history.push('/')
+            }
+        })
+        .catch(error => alert(error.message))
     }
     return (
         <div className='login'>
@@ -29,11 +40,11 @@ function Login() {
                 <form>
                     <h5>E-mail</h5>
                     <input type='text' value={email}
-                    onChange={e=>setEmail(e.target.value)}/>
+                    onChange={e => setEmail(e.target.value)}/>
 
                     <h5>Password</h5>
                     <input type='password' value={password}
-                    onChange={e=>setPassword(e.target.value)} />
+                    onChange={e => setPassword(e.target.value)} />
                         
                     
 
@@ -58,4 +69,4 @@ function Login() {
     )
 }
 
-export default Login
+export default Login;
